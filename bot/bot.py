@@ -1,8 +1,10 @@
 from helper import *
-
+from bot.agent import *
 
 class Bot:
     def __init__(self):
+        self.initialize = True
+        self.agent = Agent()
         pass
 
     def before_turn(self, playerInfo):
@@ -10,6 +12,10 @@ class Bot:
         Gets called before ExecuteTurn. This is where you get your bot's state.
             :param playerInfo: Your bot's current state.
         """
+        if (self.initialize):
+            self.agent.setPrevInfo(playerInfo)
+            self.initialize = False
+        self.agent.setNextInfo(playerInfo)
         self.PlayerInfo = playerInfo
 
     def execute_turn(self, gameMap, visiblePlayers):
@@ -18,9 +24,9 @@ class Bot:
             :param gameMap: The gamemap.
             :param visiblePlayers:  The list of visible players.
         """
-        self.state = gameMap
+        action = self.agent.action(gameMap, visiblePlayers)
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
-        return create_move_action(Point(1, 0))
+        return action
 
     def after_turn(self):
         """
@@ -29,4 +35,3 @@ class Bot:
         pass
     def getState():
         return self.state
-

@@ -1,71 +1,100 @@
 import numpy as np
+from helper import *
 
-def stateDecoder(gameMap, visiblePlayers):
+def stateDecoder(playerInfo, gameMap, visiblePlayers):
     vecteur = []
+    vecteur.append(playerInfo.Position.x)
+    vecteur.append(playerInfo.Position.y)
     for i in range(len(gameMap.tiles)-1):
-        vecteur.append(gameMap.tiles[i])
+        for j in range(len(gameMap.tiles[i]) - 1):
+            vecteur.append(gameMap.tiles[i][j].TileContent.value)
 
-
-    if(len(visiblePlayers)>2):
+    if(len(visiblePlayers) > 2):
         for j in range(3):
             vecteur.append(visiblePlayers[j].Health)
-            vecteur.append(visiblePlayers[j].Position)
+            vecteur.append(visiblePlayers[j].Position.x)
+            vecteur.append(visiblePlayers[j].Position.y)
             vecteur.append(visiblePlayers[j].TotalResources)
             vecteur.append(visiblePlayers[j].AttackPower)
     elif (len(visiblePlayers) == 0):
-        for l in range(12):
+        for l in range(15):
             vecteur.append(0)
-    elif(len(visiblePlayer) == 1):
+    elif(len(visiblePlayers) == 1):
         for k in range(1):
             vecteur.append(visiblePlayers[k].Health)
-            vecteur.append(visiblePlayers[k].Position)
+            vecteur.append(visiblePlayers[k].Position.x)
+            vecteur.append(visiblePlayers[k].Position.y)
             vecteur.append(visiblePlayers[k].TotalResources)
             vecteur.append(visiblePlayers[k].AttackPower)
-        for n in range(8):
+        for n in range(10):
             vecteur.append(0)
 
-    elif(len(visiblePlayer) == 2):
+    elif(len(visiblePlayers) == 2):
         for k in range(2):
             vecteur.append(visiblePlayers[k].Health)
-            vecteur.append(visiblePlayers[k].Position)
+            vecteur.append(visiblePlayers[k].Position.x)
+            vecteur.append(visiblePlayers[k].Position.y)
             vecteur.append(visiblePlayers[k].TotalResources)
             vecteur.append(visiblePlayers[k].AttackPower)
-        for n in range(4):
+        for n in range(5):
             vecteur.append(0)
+    return vecteur
 
-
-return vecteur
-
-    def decide_action(self, priority, gameMap, visiblePlayers):
-        
+def decide_action(priority, gameMap, visiblePlayers, playerInfo):
         directionEnemy = Point()
         directionCollect = Point()
-        posPlayer = Point(self)
-        tileHaut = Point(posPlayer.x, posPlayer.y +1)
+        posPlayer = playerInfo.Position
+        tileHaut = Point(posPlayer.x, posPlayer.y + 1)
         tileDroite = Point(posPlayer.x + 1, posPlayer.y)
         tileBas = Point(posPlayer.x, posPlayer.y - 1)
         tileGauche = Point(posPlayer.x - 1, posPlayer.y)
-        
+        canAttack = False
+
         for i in range(len(visiblePlayers)-1):
             posEnemy = Point(visiblePlayers[i])
             if posPlayer.x - posEnemy.x == 1:
                 directionEnemy.x = -1
-            if posPlayer.x - posEnemy.x == -1:
+                canAttack = True
+            elif posPlayer.x - posEnemy.x == -1:
                 directionEnemy.x = 1
-            if posPlayer.y - posEnemy.y == 1:
+                canAttack = True
+            elif posPlayer.y - posEnemy.y == 1:
                 directionEnemy.y = -1
-            if posPlayer.y - posEnemy.y == -1:
+                canAttack = True
+            elif posPlayer.y - posEnemy.y == -1:
                 directionEnemy.y = 1
+                canAttack = True
 
-            if gameMap.getTileAt(gameMap, tileHaut) == 4:
-                directionCollect.y = 1
-            if gameMap.getTileAt(gameMap, tileDroite) == 4:
-                directionCollect.x = 1
-            if gameMap.getTileAt(gameMap, tileBas) == 4:
-                directionCollect.y = -1
-            if gameMap.getTileAt(gameMap, tileGauche) == 4:
-                directionCollect.x = -1
-                
+        attackWall = False
+        wallDir = Point()
+        if (gameMap.getTileAt(tileHaut) == 1):
+            attackWall = True
+            wallDir = tileHaut
+        elif (gameMap.getTileAt(tileBas) == 1):
+            attackWall = True
+            wallDir = tileBas
+        elif (gameMap.getTileAt(tileGauche) == 1):
+            attackWall = True
+            wallDir = tileGauche
+        elif (gameMap.getTileAt(tileDroite) == 1):
+            attackWall = True
+            wallDir = tileDroite
+
+        canCollect = False
+        if gameMap.getTileAt(tileHaut) == 4:
+            directionCollect.y = 1
+            canCollect = True
+        elif gameMap.getTileAt(tileDroite) == 4:
+            directionCollect.x = 1
+            canCollect = True
+        elif gameMap.getTileAt(tileBas) == 4:
+            directionCollect.y = -1
+            canCollect = True
+        elif gameMap.getTileAt(tileGauche) == 4:
+            directionCollect.x = -1
+            canCollect = True
+
+
         if priority == 0:
             return create_move_action(Point(-1,0))
         elif priority == 1:
@@ -75,13 +104,26 @@ return vecteur
         elif priority == 3:
             return create_move_action(Point(0,-1))
         elif priority == 4:
-            return create_attack_action(direction)
+            if (canAttack):
+                return create_attack_action(directionEnemy)
+            elif (attackWall):
+                return create_empty_action(wallDir)
+            else:
+                return create_empty_action()
         elif priority == 5:
-            return create_collect_action(directoinCollect)
+            if (canCollect):
+                return create_collect_action(directionCollect)
+            else:
+                return create_empty_action()
         elif priority == 6:
-            return create_purchase_action(Sword)
+            if (gameMap.getTileAt(posPlayer) == 5):
+                return create_purchase_action(PurchasableItem)
+            else:
+                return create_empty_action()
         elif priority == 7:
-            return create_upgrade_action(CollectingSpeed)
+            if (gameMap.getTileAt(posPlayer) == 2):
+                return create_upgrade_action(UpgradeType)
+            else:
+                return create_empty_action()
         elif priority == 8:
             return create_heal_action()
-                              
