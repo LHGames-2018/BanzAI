@@ -106,8 +106,8 @@ class Agent:
             action = random.randint(0, 8)
         else:
             action = np.argmax(self.model.predict(self.state)[0])
-        if(self.epsilon > self.epsilon_min):
-            self.epsilon *= self.e_decay
+        # if(self.epsilon > self.epsilon_min):
+            # self.epsilon *= self.e_decay
 
         reward = self.getRewards()
         next_state = np.reshape(next_state, [1, self.n_states])
