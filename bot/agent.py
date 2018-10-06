@@ -48,6 +48,8 @@ class Agent:
         self.model.add(Dense(output_dim,activation="linear"))
         self.model.compile(loss='mse', optimizer=Adam(lr=0.001))
 
+    def hasDie():
+        return (Bot.PlayerInfo.Health == 0)
 
     def action(gameMap, visiblePlayer):
         next_state = stateDecoder(gameMap, VisiblePlayer)
