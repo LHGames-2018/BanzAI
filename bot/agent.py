@@ -55,23 +55,24 @@ class Agent:
         next_state = stateDecoder(gameMap, VisiblePlayer)
         if(epsilon >= random.random()):
             action = env.action_space.sample()
-        else:
+        else:   
             action = np.argmax(model.predict(state)[0])
 
         if(epsilon > epsilon_min):
-            epsilon *= e_decay
-
+            epsilon *= e_decay 
+        
         reward = getRewards()
         next_state = np.reshape(next_state, [1,n_states])
         total_reward += reward
-
-        self.memory.append([next_state, action, reward, state, done])
+        done = hasDied()
+        self.memory.append([next_state, action, reward, state,done])    
 
         if len(memory) < 32:
             continue
 
         update_Qs()
-        self.state = next_state
+        self.state = next_state  
+        return decide_action()
 
     def __getRewards():
         nextInfo = Bot.PlayerInfo
