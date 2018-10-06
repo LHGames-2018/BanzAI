@@ -85,7 +85,7 @@ class Agent:
         if (next.Health < prev.Health):
             reward -= 5
         #If he gained HP
-        else if (next.Health > prev.Health):
+        elif (next.Health > prev.Health):
             reward += 5
 
         if (len(next.CarriedItems) > len(prev.CarriedItems)):
@@ -111,7 +111,7 @@ class Agent:
         reward += (next.Score - prev.Score) / 100
 
         #If he's dead
-        if (next.Health == 0)
+        if (next.Health == 0):
             reward = -100
 
         self.prevInfo = nextInfo
