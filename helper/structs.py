@@ -24,7 +24,7 @@ class Point(object):
 
     # Overloaded operators
     def __add__(self, point):
-        return Point(self.y + point.x, self.y + point.y)
+        return Point(self.x + point.x, self.y + point.y)
 
     def __sub__(self, point):
         return Point(self.y - point.x, self.y - point.y)
