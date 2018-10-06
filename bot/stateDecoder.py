@@ -15,7 +15,7 @@ def stateDecoder(gameMap, visiblePlayers):
     elif (len(visiblePlayers) == 0):
         for l in range(12):
             vecteur.append(0)
-    elif((len(visiblePlayer) == 1 ):
+    elif((len(visiblePlayer) == 1):
         for k in range(1):
             vecteur.append(visiblePlayers[k].Health)
             vecteur.append(visiblePlayers[k].Position)
@@ -24,7 +24,7 @@ def stateDecoder(gameMap, visiblePlayers):
         for n in range(8):
             vecteur.append(0)
 
-    elif((len(visiblePlayer) == 1 ):
+    elif((len(visiblePlayer) == 2):
         for k in range(2):
             vecteur.append(visiblePlayers[k].Health)
             vecteur.append(visiblePlayers[k].Position)
