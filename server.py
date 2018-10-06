@@ -38,7 +38,7 @@ def response():
     bot.before_turn(player)
     action = bot.execute_turn(gameInfo['GameMap'], gameInfo['OtherPlayers'])
     bot.after_turn()
-    print(action)
+    # print(action)
     return action
 
 
