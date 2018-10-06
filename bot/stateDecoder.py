@@ -66,14 +66,22 @@ return vecteur
             if gameMap.getTileAt(gameMap, tileGauche) == 4:
                 directionCollect.x = -1
                 
-        switcher = {
-                0:create_move_action(Point(-1,0)),
-                1:create_move_action(Point(1,0)),
-                2:create_move_action(Point(0,1)),
-                3:create_move_action(Point(0,-1)),
-                4:create_attack_action(direction),
-                5:create_collect_action(directoinCollect),
-                6:create_purchase_action(Sword),
-                7:create_upgrade_action(CollectingSpeed),
-                8:create_heal_action()
-                }
+        if priority == 0:
+            return create_move_action(Point(-1,0))
+        elif priority == 1:
+            return create_move_action(Point(1,0))
+        elif priority == 2:
+            return create_move_action(Point(0,1))
+        elif priority == 3:
+            return create_move_action(Point(0,-1))
+        elif priority == 4:
+            return create_attack_action(direction)
+        elif priority == 5:
+            return create_collect_action(directoinCollect)
+        elif priority == 6:
+            return create_purchase_action(Sword)
+        elif priority == 7:
+            return create_upgrade_action(CollectingSpeed)
+        elif priority == 8:
+            return create_heal_action()
+                              
