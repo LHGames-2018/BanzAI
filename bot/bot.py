@@ -24,9 +24,9 @@ class Bot:
             :param gameMap: The gamemap.
             :param visiblePlayers:  The list of visible players.
         """
-        action = self.agent.action(gameMap, visiblePlayers)
+        # action = self.agent.action(gameMap, visiblePlayers)
         # Write your bot here. Use functions from aiHelper to instantiate your actions.
-        return action
+        return create_attack_action(Point(1, 0))
 
     def after_turn(self):
         """
