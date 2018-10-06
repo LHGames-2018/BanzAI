@@ -49,7 +49,7 @@ return vecteur
         for i in range(len(visiblePlayers)-1):
             posEnemy = Point(visiblePlayers[i])
             if posPlayer.x - posEnemy.x == 1:
-               directionEnemy.x = -1
+                directionEnemy.x = -1
             if posPlayer.x - posEnemy.x == -1:
                 directionEnemy.x = 1
             if posPlayer.y - posEnemy.y == 1:
