@@ -1,4 +1,5 @@
 import Player
+import stateDecoder
 import Bot
 import numpy as np
 import random
@@ -14,7 +15,7 @@ class Agent:
         self.prevInfo = Bot.playerInfo
         self.state = []
         self.n_actions = 7
-        self.n_states = 2
+        self.n_states = 412
         self.neural_net(input_dim = n_states, output_dim = n_actions)
         self.epsilon = 1.0
         self.episodes = 1000
@@ -25,7 +26,7 @@ class Agent:
         self.model = keras.Sequential()
         neural_net()
 
-    def get_samples(size = 32):
+    def __get_samples(size = 32):
         samples = random.sample(memory,size)
         return samples
     
@@ -38,7 +39,7 @@ class Agent:
                 Q_target[action] += discount_factor*np.amax(model.predict(next_state)[0]) 
             model.fit( state, np.array([Q_target]),epochs = 1, verbose = 0)
     
-    def neural_net(input_dim, output_dim):
+    def __neural_net(input_dim, output_dim):
         self.model.add(Dense(64, input_shape = (input_dim,), activation="relu"))
         self.model.add(Dense(64, activation = "relu"))
         self.model.add(Dense(128, activation = "relu"))
@@ -49,7 +50,7 @@ class Agent:
   
     
     def action(gameMap, visiblePlayer):
-        next_state = stateEncoder(gameMap, VisiblePlayer)
+        next_state = stateDecoder(gameMap, VisiblePlayer)
         if(epsilon >= random.random()):
             action = env.action_space.sample()
         else:   
@@ -72,7 +73,7 @@ class Agent:
     
    
     
-    def getRewards():
+    def __getRewards():
         nextInfo = Bot.playerInfo
         
         rewards = 0
