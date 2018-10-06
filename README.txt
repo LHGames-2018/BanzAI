@@ -1,10 +1,12 @@
 rewards:
-- do undoable action: -5
+- do undoable action: -1
 - lose hp: -5
 - die: -100
-- kill: +10
+- kill: +20
 - attack: +5
 - collect ressouces: +5
+- destroy wall : +10
+
 
 action vector:
 0: go left
