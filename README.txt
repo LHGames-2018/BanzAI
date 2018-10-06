@@ -15,3 +15,4 @@ action vector:
 5: collect
 6: purchase
 7: upgrade 
+8: drink potion
